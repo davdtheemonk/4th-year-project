@@ -8,8 +8,10 @@ app.use(express.json());
 app.use(cors());
 require("dotenv").config();
 const mongoose = require("mongoose");
-const messagesRouter = require("./routes/messages");
+const messagesRouter = require("./routes/chat");
 const usersRouter = require("./routes/users");
+app.use("/api/v1/users", usersRouter);
+app.use("/api/v1/chat", messagesRouter);
 let uri = "";
 if (process.env.NODE_ENV === "production") {
   uri = process.env.PROD_ATLAS_URI;
@@ -22,7 +24,7 @@ const client = mongoose.connection;
 client.once("open", () => {
   console.log("MongoDB database connection established successfully");
 });
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
   console.log(`Server is online on port: ${PORT}`);
 });

@@ -1,11 +1,15 @@
 const router = require("express").Router();
 
 let { User, validate, validateLogin } = require("../models/user.model");
+const Admin = require("../models/admin.model");
+const Reporter = require("../models/reporter.model");
+const Police = require("../models/police.model");
 let bcrypt = require("bcrypt");
 let authtoken = require("../middleware/authToken");
 
 router.route("/auth/register").post(async (req, res) => {
   try {
+    console.log(req.body);
     const { error } = validate(req.body);
     if (error)
       return res.status(400).send({ message: error.details[0].message });
@@ -22,26 +26,26 @@ router.route("/auth/register").post(async (req, res) => {
       ...req.body,
       password: hashPassword,
     }).save();
-    if (newuser.accounttype == "Reporter") {
-      await new Owner({
+    if (newuser.accounttype === "reporter") {
+      await new Reporter({
         user: newuser._id.toString(),
       }).save();
     }
-    if (newuser.accounttype == "Admin") {
-      await new Tenant({
+    if (newuser.accounttype === "admin") {
+      await new Admin({
         user: newuser._id.toString(),
       }).save();
     }
-    if (newuser.accounttype == "Official") {
-      await new Vendor({
+    if (newuser.accounttype === "police") {
+      await new Police({
         user: newuser._id.toString(),
       }).save();
     }
 
-    res.status(201).send({ message: "User Created successfully" });
+    return res.status(200).send({ message: "User Created successfully" });
   } catch (error) {
     console.log(error);
-    res.status(500).send({ message: "Internal Server Error" });
+    return res.status(500).send({ message: "Internal Server Error" });
   }
 });
 
@@ -78,3 +82,5 @@ router.route("/auth/login").post(async (req, res) => {
     res.status(500).send({ message: "Internal Server Error" });
   }
 });
+
+module.exports = router;
