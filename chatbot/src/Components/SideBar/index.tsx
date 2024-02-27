@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { GoHome } from "react-icons/go";
+import { CiChat1 } from "react-icons/ci";
 import { HiOutlineDocumentReport } from "react-icons/hi";
 import SideBarComponent from "../SideBarComponent";
 
@@ -19,6 +20,12 @@ const Sidebar: React.FC = () => {
       title: "Dashboard",
       icon: <GoHome className="w-5 h-5  text-grey" />,
       link: "/dashboard",
+    },
+    {
+      id: 0,
+      title: "Chat",
+      icon: <CiChat1 className="w-5 h-5  text-grey" />,
+      link: "/chat",
     },
     {
       id: 1,
