@@ -19,8 +19,8 @@ const Chat: React.FC = () => {
   };
 
   return (
-    <div className="mt-[500px]">
-      <div className="flex-grow overflow-auto">
+    <div className="  relative">
+      <div className="flex-grow overflow-y-scroll mt-4">
         {messages.map((message, index) => (
           <>
             <div key={index} className="flex items-center mb-2 justify-end">
@@ -47,11 +47,23 @@ const Chat: React.FC = () => {
         ))}
       </div>
 
-      <div className="flex items-center gap-2 p-4 bg-primary justify-between">
+      <div
+        style={{
+          position: "fixed",
+          bottom: 0,
+          left: "50%",
+          transform: "translateX(-50%)",
+          padding: "10px",
+          flexDirection: "row",
+          display: "flex",
+          gap: 4,
+          justifyContent: "center",
+        }}
+      >
         <input
           type="text"
           placeholder="Ask Question"
-          className="flex-grow border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+          className="flex-grow border w-full border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
           value={question}
           onChange={handleChange}
         />

@@ -29,10 +29,7 @@ type AuthApiState = {
   status: "idle" | "loading" | "failed";
   error: string | null;
 };
-type ReqResponse = {
-  data:string[]
-  status:number
-}
+
 const initialState: AuthApiState = {
   basicUserInfo: localStorage.getItem("userInfo")
     ? JSON.parse(localStorage.getItem("userInfo") as string)
@@ -51,12 +48,25 @@ export const login = createAsyncThunk("login", async (data: User) => {
       loading: 'Logging In',
       success: (data) => {
         if (data.status === 500) throw new Error('server error')
+        console.log(data)
+        localStorage.setItem("userInfo", JSON.stringify(data.data));
+        setTimeout(() => {
+         
+          if(data.data.isAdmin===true){
+
        
-        localStorage.setItem("userInfo", JSON.stringify(data));
+          window.location.href = '/dashboard';
+        }else{
+          window.location.href = '/chat';
+
+        }
+        }, 5500)
+  
+       
         return "Logged in Successfuly"
       },
       error: (e) => {
-        return e.response.data.message
+        return e?.response?.data?.message || "An error occurred at our end"
       }
     })
     // You might want to return the response here for further handling in your component

@@ -8,10 +8,15 @@ interface ComponentProps {
   /** Whether the button can be interacted with */
   setPage: React.Dispatch<React.SetStateAction<number>>;
 }
+interface User {
+  isAdmin: boolean;
+}
 
 const SideBarComponent: React.FC<ComponentProps> = ({ item, setPage }) => {
   const navigate = useNavigate();
   const location = window.location.pathname;
+  const userString = localStorage.getItem("userInfo");
+  const user: User | null = userString ? JSON.parse(userString) : null;
 
   return (
     <div
@@ -20,6 +25,8 @@ const SideBarComponent: React.FC<ComponentProps> = ({ item, setPage }) => {
         navigate(item.link);
       }}
       className={`flex ${
+        user && !user.isAdmin && item.link.slice(1) !== "chat" && "hidden"
+      } ${
         item.link.slice(1) === location.slice(1) ||
         item.link.slice(1).includes(location.slice(1, 5))
           ? `bg-[#1f202c] text-dark `
