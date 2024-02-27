@@ -1,6 +1,7 @@
 import React, { useState, ChangeEvent } from "react";
 import { IoIosSend } from "react-icons/io";
 import { IoPersonCircleOutline } from "react-icons/io5";
+import { PiSpinnerGap } from "react-icons/pi";
 
 const Chat: React.FC = () => {
   const [question, setQuestion] = useState("");
@@ -29,6 +30,20 @@ const Chat: React.FC = () => {
           </div>
         ))}
       </div>
+      {messages.length > 0 && (
+        <div className="flex-grow overflow-auto">
+          <div className="flex items-center mb-2 justify-start">
+            <img
+              src="./lawyer.jpeg"
+              alt="lawyer icon"
+              className="w-10 h-10 rounded-full m-2"
+            />
+            <div className="bg-white p-2 h-[40px] w-[100px] rounded-md flex justify-center align-center">
+              <PiSpinnerGap className="w-5 h-5 text-grey" />
+            </div>
+          </div>
+        </div>
+      )}
       <div className="flex items-center gap-2 p-4 bg-primary justify-between">
         <input
           type="text"
