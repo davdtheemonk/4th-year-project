@@ -1,9 +1,24 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useAppDispatch } from "../../hooks/redux-hooks";
+import { login } from "../../slices/authSlice";
 
 const Login: React.FC = () => {
   const [email, setEmail] = React.useState<string>("");
   const [password, setPassword] = React.useState<string>("");
+  const dispatch = useAppDispatch();
+
+  const handleLogin = async () => {
+    // This is only a basic validation of inputs. Improve this as needed.
+    if (email && password) {
+      dispatch(
+        login({
+          email,
+          password,
+        })
+      );
+    }
+  };
   return (
     <div className="bg-primary h-screen gap-8 flex justify-start items-center flex-col py-14">
       <img
@@ -11,10 +26,11 @@ const Login: React.FC = () => {
         src="./lawyer.jpeg"
         alt="lawyer"
       />
+      <p className="text-white   font-medium">Log in to Chatbot</p>
       <input
         value={email}
-        className="bg-white w-[300px] h-[40px] rounded-md"
-        placeholder="Email"
+        className="custom-input  focus:border-blue focus:border-2 focus:border-solid   w-[300px] h-[40px] rounded-md"
+        placeholder="Enter your email address"
         type="email"
         onChange={(e) => {
           setEmail(e.target.value);
@@ -22,7 +38,7 @@ const Login: React.FC = () => {
       />
       <input
         value={password}
-        className="bg-white w-[300px] h-[40px] rounded-md"
+        className="custom-input  focus:border-blue focus:border-2 focus:border-solid  color-white w-[300px] h-[40px] rounded-md"
         placeholder="Password"
         type="password"
         onChange={(e) => {
@@ -30,7 +46,12 @@ const Login: React.FC = () => {
         }}
       />
 
-      <button className="bg-maroon rounded-md w-[300px] h-[40px] text-white">
+      <button
+        onClick={() => {
+          handleLogin();
+        }}
+        className="bg-maroon rounded-md w-[300px] h-[40px] text-white"
+      >
         LOGIN
       </button>
 
