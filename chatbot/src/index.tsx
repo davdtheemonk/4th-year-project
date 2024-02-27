@@ -7,7 +7,6 @@ import Login from "./Pages/Login";
 import { Toaster } from "react-hot-toast";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Dashboard from "./Pages/Dashboard";
-import Chat from "./Pages/Chat";
 import Controller from "./Components/Controller";
 
 const root = ReactDOM.createRoot(
@@ -21,7 +20,6 @@ root.render(
         <Route path="/" element={<Login />} />
         <Route element={<Controller />}>
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/chat" element={<Chat />} />
         </Route>
       </Routes>
     </BrowserRouter>
