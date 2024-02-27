@@ -8,21 +8,27 @@ import { Toaster } from "react-hot-toast";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Dashboard from "./Pages/Dashboard";
 import Controller from "./Components/Controller";
+import Report from "./Pages/Report";
+import { Provider } from "react-redux";
+import store from "./store";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <Toaster position="bottom-right"></Toaster>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route element={<Controller />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <Provider store={store}>
+      <Toaster position="bottom-right"></Toaster>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route element={<Controller />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/reports" element={<Report />} />{" "}
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>
 );
 

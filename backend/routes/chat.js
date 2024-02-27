@@ -1,8 +1,9 @@
 const router = require("express").Router();
-const { OpenAI } = require("langchain/llms/openai");
-const { PromptTemplate } = require("langchain/prompts");
-const { OpenAIEmbeddings } = require("langchain/embeddings/openai");
+const { OpenAI } = require("@langchain/openai");
+const { PromptTemplate } = require("@langchain/core/prompts");
+const { OpenAIEmbeddings } = require("@langchain/openai");
 const Message = require("../models/message.model");
+let authtoken = require("../middleware/authToken");
 
 router.post("/help/", authtoken, async (req, res) => {
   const template = `

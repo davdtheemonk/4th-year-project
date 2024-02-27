@@ -1,6 +1,6 @@
 import React from "react";
 import Chart from "../../Components/BarGraph";
-import SentinalAnalysis from "../../Components/SentinalAnalysis";
+import SentimentalAnalysis from "../../Components/SentimentalAnalysis";
 import Table from "../../Components/Table";
 
 const Dashboard: React.FC = () => {
@@ -14,11 +14,11 @@ const Dashboard: React.FC = () => {
           </p>
           <Chart />
         </div>
-        <div className="flex flex-col justify-start items-start md:w-[40%] md:py-24 ">
-          <SentinalAnalysis />
+        <div className="flex flex-col justify-start items-start md:w-[40%] md:py-24 py-8">
+          <SentimentalAnalysis />
         </div>
       </div>
-      <Table />
+      <Table name="Users" />
     </div>
   );
 };
