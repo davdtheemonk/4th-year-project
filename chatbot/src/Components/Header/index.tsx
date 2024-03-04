@@ -19,7 +19,7 @@ const Header: React.FC = () => {
                 {user.firstname} {user.lastname}
               </p>
               <Badge size="sm" className="bg-[#1f202c] text-slate">
-                {user.accounttype ? "Admin" : "User"}
+                {user.accounttype === "admin" ? "Admin" : "User"}
               </Badge>
             </>
           ) : (
