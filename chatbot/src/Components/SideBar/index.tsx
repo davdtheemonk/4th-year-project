@@ -4,6 +4,7 @@ import { CiChat1 } from "react-icons/ci";
 import { HiOutlineDocumentReport } from "react-icons/hi";
 import SideBarComponent from "../SideBarComponent";
 import { SideBarItem } from "../../myTypes";
+import { RiLogoutBoxLine } from "react-icons/ri";
 
 const Sidebar: React.FC = () => {
   const [page, setPage] = useState<number>(0);
@@ -36,6 +37,10 @@ const Sidebar: React.FC = () => {
           key={sidebarItem.id}
         />
       ))}
+      <div className="absolute  bottom-0 mt-auto flex  flex-row items-center gap-4 justify-start p-[10px]">
+        <RiLogoutBoxLine className="text-danger" />
+        <p className="text-danger">Sign out</p>
+      </div>
     </div>
   );
 };

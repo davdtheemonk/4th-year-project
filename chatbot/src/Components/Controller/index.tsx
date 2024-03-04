@@ -9,7 +9,7 @@ const Controller: React.FC = () => {
       <Header />
       <Sidebar />
 
-      <div className="w-full md:pl-[270px] py-[70px] px-14 min-h-screen">
+      <div className="w-full md:pl-[270px] py-[70px] px-8 min-h-screen">
         <Outlet />
       </div>
     </div>

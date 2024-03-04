@@ -15,7 +15,10 @@ const SideBarComponent: React.FC<ComponentProps> = ({ item, setPage }) => {
         navigate(item.link);
       }}
       className={`flex ${
-        user && !user.isAdmin && item.link.slice(1) !== "chat" && "hidden"
+        user &&
+        user.accounttype !== "admin" &&
+        item.link.slice(1) !== "chat" &&
+        "hidden"
       } ${
         item.link.slice(1) === location.slice(1) ||
         item.link.slice(1).includes(location.slice(1, 5))

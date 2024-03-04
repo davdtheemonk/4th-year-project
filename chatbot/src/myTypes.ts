@@ -4,6 +4,7 @@ export interface User {
     firstname: string;
     lastname: string;
     email:string;
+    accounttype:string,
     isAdmin: boolean;
   }
 
@@ -28,6 +29,12 @@ export interface User {
     link: string;
     /** Whether the button can be interacted with */
   }
+ export type Message = {
+ 
+    message:string,
+    sender:string,
+    chatId:string,
+  }
   export interface TableProps {
     name: string;
   }
@@ -38,7 +45,8 @@ export interface User {
   /** Whether the button can be interacted with */
   setPage: React.Dispatch<React.SetStateAction<number>>;
 }
-export type Messages = {
+export type Messages ={
+
     sender: string;
     message: string;
-  };
+};

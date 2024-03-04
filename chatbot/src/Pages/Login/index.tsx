@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useAppDispatch } from "../../hooks/redux-hooks";
-import { login } from "../../slices/authSlice";
+import { anonymousLogin, login } from "../../slices/authSlice";
 
 const Login: React.FC = () => {
   const [email, setEmail] = React.useState<string>("");
@@ -18,6 +18,9 @@ const Login: React.FC = () => {
         })
       );
     }
+  };
+  const handleAnonymousLogin = async () => {
+    dispatch(anonymousLogin());
   };
   return (
     <div className="bg-primary h-screen gap-8 flex justify-start items-center flex-col py-14">
@@ -55,7 +58,12 @@ const Login: React.FC = () => {
         LOGIN
       </button>
 
-      <button className="bg-lightblue w-[300px] h-[40px] text-white">
+      <button
+        onClick={() => {
+          handleAnonymousLogin();
+        }}
+        className="bg-lightblue w-[300px] h-[40px] text-white"
+      >
         ANONYMOUS
       </button>
       <div className=" flex max-w-[300px] flex-row  justify-start items-center">

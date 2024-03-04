@@ -49,9 +49,9 @@ export const login = createAsyncThunk("login", async (data: User) => {
       success: (data) => {
         if (data.status === 500) throw new Error('server error')
         localStorage.setItem("userInfo", JSON.stringify(data.data));
-        setTimeout(() => {
+       setTimeout(() => {
          
-          if(data.data.isAdmin===true){
+          if(data.data.accounttype==="admin"){
 
        
           window.location.href = '/dashboard';
@@ -94,6 +94,30 @@ export const logout = createAsyncThunk("logout", async () => {
   return resData;
 });
 
+export const anonymousLogin = createAsyncThunk("anonymous", async () => {
+  const response = axiosInstance.get("/users/auth/anonymous");
+  toast.promise(response, {
+    loading: 'Logging In',
+    success: (data) => {
+      if (data.status === 500) throw new Error('server error')
+      localStorage.setItem("userInfo", JSON.stringify(data.data));
+     setTimeout(() => {
+       
+        window.location.href = `/chat/${data.data.chatId}`;
+
+      
+      }, 1500)
+
+     
+      return "Logged in as Anonymous User"
+    },
+    error: (e) => {
+      return e?.response?.data?.message || "An error occurred at our end"
+    }
+  })
+
+});
+
 export const getUser = createAsyncThunk(
   "users/profile",
   async (userId: string) => {
@@ -115,6 +139,12 @@ const authSlice = createSlice({
       state.status = "failed";
       state.error = action.error.message || "Login failed";
     })
+
+    .addCase(anonymousLogin.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message || "Login failed";
+    })
+ 
       .addCase(register.pending, (state) => {
         state.status = "loading";
         state.error = null;

@@ -11,14 +11,15 @@ const messageSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    recipient: {
+    recepient: {
       type: String,
       required: true,
     },
-    sent: {
-      type: Boolean,
+    sentiment: {
+      type: String,
     },
-    conversationID: {
+
+    chatId: {
       type: String,
       required: true,
     },

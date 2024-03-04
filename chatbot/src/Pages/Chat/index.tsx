@@ -1,12 +1,12 @@
-import { useParams } from "next/navigation";
+import { useParams } from "react-router-dom";
 import React, { useState, ChangeEvent, useEffect } from "react";
 import { IoIosSend } from "react-icons/io";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { PiSpinnerGap } from "react-icons/pi";
 import { useAppDispatch } from "../../hooks/redux-hooks";
-import { getMessages } from "../../slices/messagesSlice";
+import { getMessages, sendMessage } from "../../slices/messagesSlice";
 import { useAppSelector } from "../../hooks/redux-hooks";
-import { Messages, User } from "../../myTypes";
+import { Messages, User, Message } from "../../myTypes";
 
 const Chat: React.FC = () => {
   const userString = localStorage.getItem("userInfo");
@@ -16,27 +16,40 @@ const Chat: React.FC = () => {
   const [messages, setMessages] = useState<Messages[]>([]);
   const { id } = useParams();
   const dispatch = useAppDispatch();
-  const chatId: string = id[0];
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setQuestion(e.target.value);
   };
 
   const messagesDb = useAppSelector((state) => state.message.messages);
+  const message = useAppSelector((state) => state.message.message);
   const handleSend = () => {
     if (question.trim() !== "") {
       setMessages([
         ...messages,
         { sender: user ? user.email : "anonymous", message: question },
       ]);
+
       setQuestion(""); // Clear the input field after sending
+      if (id) {
+        dispatch(
+          sendMessage({
+            sender: user ? user.email : "anonymous",
+            message: question,
+            chatId: id,
+          })
+        );
+      }
     }
   };
   useEffect(() => {
     if (id) {
-      dispatch(getMessages({ url: chatId }));
+      dispatch(getMessages({ url: id }));
     }
-    if (messagesDb) {
-      setMessages(messagesDb ? messagesDb : []);
+
+    setMessages(messagesDb ? messagesDb : []);
+
+    if (message) {
+      setMessages([...messages, { sender: "AI", message: message.message }]);
     }
   }, []);
 
@@ -45,12 +58,29 @@ const Chat: React.FC = () => {
       <div className="flex-grow overflow-y-hidden mt-4">
         {messages.map((message, index) => (
           <>
-            <div key={index} className="flex items-center mb-2 justify-end">
-              <div className="bg-lightblue text-white p-2 rounded-md">
-                {message.message}
+            {message.sender === "Anonymous" ||
+              (message.sender !== "AI" && (
+                <div key={index} className="flex items-center mb-2 justify-end">
+                  <div className="bg-lightblue text-white p-2 rounded-md">
+                    {message.message}
+                  </div>
+                  <IoPersonCircleOutline className="w-10 h-10 text-grey mr-2" />
+                </div>
+              ))}
+            {message.sender === "AI" && (
+              <div key={index} className="flex-grow overflow-auto">
+                <div className="flex items-center mb-2 justify-start">
+                  <img
+                    src="/lawyer.jpeg"
+                    alt="lawyer icon"
+                    className="w-10 h-10 rounded-full m-2"
+                  />
+                  <div className="bg-white p-2 h-auto rounded-md flex justify-center align-center">
+                    {message.message}
+                  </div>
+                </div>
               </div>
-              <IoPersonCircleOutline className="w-10 h-10 text-grey mr-2" />
-            </div>
+            )}
           </>
         ))}
       </div>

@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema({
   verified: { type: Boolean, default: false },
   profilepicUrl: { type: String, required: false },
   isAdmin: { type: Boolean, required: false, default: false },
+  chatId: { type: String, required: false, default: false },
 });
 
 //We'll use cluodinary CDN for storing imageurl
