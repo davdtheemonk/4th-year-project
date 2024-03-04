@@ -48,7 +48,6 @@ export const login = createAsyncThunk("login", async (data: User) => {
       loading: 'Logging In',
       success: (data) => {
         if (data.status === 500) throw new Error('server error')
-        console.log(data)
         localStorage.setItem("userInfo", JSON.stringify(data.data));
         setTimeout(() => {
          
@@ -57,10 +56,10 @@ export const login = createAsyncThunk("login", async (data: User) => {
        
           window.location.href = '/dashboard';
         }else{
-          window.location.href = '/chat';
+          window.location.href = `/chat/${data.data.chatId}`;
 
         }
-        }, 5500)
+        }, 1500)
   
        
         return "Logged in Successfuly"

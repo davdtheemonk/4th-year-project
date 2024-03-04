@@ -10,10 +10,7 @@ import {
   Title,
 } from "@tremor/react";
 import { FiMoreVertical } from "react-icons/fi";
-
-interface TableProps {
-  name: string;
-}
+import { TableProps } from "../../myTypes";
 
 const data = [
   {

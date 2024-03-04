@@ -1,16 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-
-interface ComponentProps {
-  /** The text to display inside the button */
-  item: { id: number; link: string; icon: any; title: string };
-
-  /** Whether the button can be interacted with */
-  setPage: React.Dispatch<React.SetStateAction<number>>;
-}
-interface User {
-  isAdmin: boolean;
-}
+import { User, ComponentProps } from "../../myTypes";
 
 const SideBarComponent: React.FC<ComponentProps> = ({ item, setPage }) => {
   const navigate = useNavigate();

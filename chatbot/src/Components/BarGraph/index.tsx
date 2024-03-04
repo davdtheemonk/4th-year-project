@@ -1,12 +1,6 @@
 import { BarChart, Title } from "@tremor/react";
 import React from "react";
-
-interface ChartDataItem {
-  name: string;
-  "Reported Cases ": number;
-  "Users ": number;
-  "Messages ": number;
-}
+import { ChartDataItem } from "../../myTypes";
 
 const chartdata: ChartDataItem[] = [
   {

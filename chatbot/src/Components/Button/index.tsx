@@ -7,7 +7,7 @@ const Button: React.FC = () => {
       <div className="absolute topline right-0 top-0 h-px w-[80%]"></div>
 
       <TiMessageTyping className="text-slate" />
-      <p className="text-slate">Feedback</p>
+      <p className="text-slate">Report</p>
     </div>
   );
 };

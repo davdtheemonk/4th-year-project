@@ -1,12 +1,7 @@
 import React from "react";
 import { ProgressCircle } from "@tremor/react";
-interface CardProps {
-  percentage: number;
-  total: number;
-  messages: number;
-  name: string;
-  color: string;
-}
+import { CardProps } from "../../myTypes";
+
 const SentimentCard: React.FC<CardProps> = ({
   percentage,
   total,

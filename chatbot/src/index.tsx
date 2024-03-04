@@ -12,10 +12,22 @@ import Controller from "./Components/Controller";
 import Report from "./Pages/Report";
 import { Provider } from "react-redux";
 import store from "./store";
+import axios from "axios";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
+const storedUserInfo = localStorage.getItem("userInfo");
+
+const user = storedUserInfo ? JSON.parse(storedUserInfo) : null;
+
+if (user !== null) {
+  const token = user.data;
+
+  axios.defaults.headers["x-auth-token"] = token;
+}
+
 root.render(
   <React.StrictMode>
     <Provider store={store}>
@@ -26,12 +38,11 @@ root.render(
           <Route element={<Controller />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/reports" element={<Report />} />
-            <Route path="/chat" element={<Chat />} />
+            <Route path="/chat/:id" element={<Chat />} />
           </Route>
         </Routes>
       </BrowserRouter>
     </Provider>
-
   </React.StrictMode>
 );
 

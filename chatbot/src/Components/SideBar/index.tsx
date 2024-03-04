@@ -3,15 +3,8 @@ import { GoHome } from "react-icons/go";
 import { CiChat1 } from "react-icons/ci";
 import { HiOutlineDocumentReport } from "react-icons/hi";
 import SideBarComponent from "../SideBarComponent";
+import { SideBarItem } from "../../myTypes";
 
-interface SideBarItem {
-  /** The text to display inside the button */
-  id: number;
-  title: string;
-  icon: any;
-  link: string;
-  /** Whether the button can be interacted with */
-}
 const Sidebar: React.FC = () => {
   const [page, setPage] = useState<number>(0);
   const sidebarItems: SideBarItem[] = [
