@@ -1,11 +1,8 @@
 import React from "react";
 import { Badge } from "@tremor/react";
 import Button from "../Button";
-interface User {
-  firstname: string;
-  lastname: string;
-  isAdmin: boolean;
-}
+import { User } from "../../myTypes";
+
 const Header: React.FC = () => {
   const userString = localStorage.getItem("userInfo");
   const user: User | null = userString ? JSON.parse(userString) : null;
@@ -22,13 +19,13 @@ const Header: React.FC = () => {
                 {user.firstname} {user.lastname}
               </p>
               <Badge size="sm" className="bg-[#1f202c] text-slate">
-                {user.isAdmin ? "Admin" : "User"}
+                {user.accounttype === "admin" ? "Admin" : "User"}
               </Badge>
             </>
           ) : (
             <p className="text-slate text-sm">Anonymous</p>
           )}
-          <Button />
+          {user && user.accounttype === "reporter" && <Button />}
         </div>
       </nav>
     </div>

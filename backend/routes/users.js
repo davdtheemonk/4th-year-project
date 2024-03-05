@@ -1,12 +1,19 @@
 const router = require("express").Router();
-
+const jwt = require("jsonwebtoken");
 let { User, validate, validateLogin } = require("../models/user.model");
 const Admin = require("../models/admin.model");
 const Reporter = require("../models/reporter.model");
 const Police = require("../models/police.model");
 let bcrypt = require("bcrypt");
 let authtoken = require("../middleware/authToken");
+const { v4: uuidv4 } = require("uuid");
 
+const generateAnonymousAuthToken = (chatId) => {
+  const token = jwt.sign({ _id: chatId }, process.env.PRIVATE_KEY, {
+    expiresIn: "1d",
+  });
+  return token;
+};
 router.route("/auth/register").post(async (req, res) => {
   try {
     console.log(req.body);
@@ -21,9 +28,10 @@ router.route("/auth/register").post(async (req, res) => {
         .send({ message: "User with given email already exists" });
     const salt = await bcrypt.genSalt(Number(process.env.SALT));
     const hashPassword = await bcrypt.hash(req.body.password, salt);
-
+    const chatId = uuidv4();
     const newuser = await new User({
       ...req.body,
+      chatId,
       password: hashPassword,
     }).save();
     if (newuser.accounttype === "reporter") {
@@ -46,6 +54,39 @@ router.route("/auth/register").post(async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).send({ message: "Internal Server Error" });
+  }
+});
+
+router.route("/auth/anonymous").get(async (req, res) => {
+  try {
+    const salt = await bcrypt.genSalt(Number(process.env.SALT));
+    const hashPassword = await bcrypt.hash("anonymous user202", salt);
+    const chatId = uuidv4();
+    const token = generateAnonymousAuthToken(chatId);
+    const newuser = await new User({
+      firstname: "Anonymous",
+      lastname: "user",
+      email: "anonymous@anonymous.com",
+      password: "anonymous user202",
+      accounttype: "reporter",
+      chatId,
+      password: hashPassword,
+    }).save();
+
+    res.status(200).send({
+      data: token,
+      message: "Logged in successfully",
+      firstname: newuser.firstname,
+      lastname: newuser.lastname,
+      phonenumber: "",
+      email: newuser.email,
+      accounttype: newuser.accounttype,
+
+      chatId: chatId,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ message: "Internal Server Error" });
   }
 });
 
@@ -76,6 +117,7 @@ router.route("/auth/login").post(async (req, res) => {
       accounttype: user.accounttype,
       verified: user.verified,
       isAdmin: user.isAdmin,
+      chatId: user.chatId,
     });
   } catch (err) {
     console.log(err);

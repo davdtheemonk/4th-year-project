@@ -1,16 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-
-interface ComponentProps {
-  /** The text to display inside the button */
-  item: { id: number; link: string; icon: any; title: string };
-
-  /** Whether the button can be interacted with */
-  setPage: React.Dispatch<React.SetStateAction<number>>;
-}
-interface User {
-  isAdmin: boolean;
-}
+import { User, ComponentProps } from "../../myTypes";
 
 const SideBarComponent: React.FC<ComponentProps> = ({ item, setPage }) => {
   const navigate = useNavigate();
@@ -25,7 +15,10 @@ const SideBarComponent: React.FC<ComponentProps> = ({ item, setPage }) => {
         navigate(item.link);
       }}
       className={`flex ${
-        user && !user.isAdmin && item.link.slice(1) !== "chat" && "hidden"
+        user &&
+        user.accounttype !== "admin" &&
+        item.link.slice(1) !== "chat" &&
+        "hidden"
       } ${
         item.link.slice(1) === location.slice(1) ||
         item.link.slice(1).includes(location.slice(1, 5))

@@ -1,27 +1,33 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useAppDispatch } from "../../hooks/redux-hooks";
-import { anonymousLogin, login } from "../../slices/authSlice";
+import { register } from "../../slices/authSlice";
 
-const Login: React.FC = () => {
+const Register: React.FC = () => {
   const [email, setEmail] = React.useState<string>("");
+  const [firstname, setFirstname] = React.useState<string>("");
+  const [lastname, setLastname] = React.useState<string>("");
   const [password, setPassword] = React.useState<string>("");
+  const [phonenumber, setPhonenumber] = React.useState<string>("");
   const dispatch = useAppDispatch();
+  const accounttype = "reporter";
 
   const handleLogin = async () => {
     // This is only a basic validation of inputs. Improve this as needed.
     if (email && password) {
       dispatch(
-        login({
+        register({
+          firstname,
+          lastname,
+          phonenumber,
           email,
           password,
+          accounttype,
         })
       );
     }
   };
-  const handleAnonymousLogin = async () => {
-    dispatch(anonymousLogin());
-  };
+
   return (
     <div className="bg-primary h-screen gap-8 flex justify-start items-center flex-col py-14">
       <img
@@ -29,7 +35,34 @@ const Login: React.FC = () => {
         src="./lawyer.jpeg"
         alt="lawyer"
       />
-      <p className="text-white   font-medium">Log in to Chatbot</p>
+      <p className="text-white   font-medium">Register to use Chatbot</p>
+      <input
+        value={firstname}
+        className="custom-input  focus:border-blue focus:border-2 focus:border-solid   w-[300px] h-[40px] rounded-md"
+        placeholder="Enter your Firstname"
+        type="text"
+        onChange={(e) => {
+          setFirstname(e.target.value);
+        }}
+      />
+      <input
+        value={lastname}
+        className="custom-input  focus:border-blue focus:border-2 focus:border-solid   w-[300px] h-[40px] rounded-md"
+        placeholder="Enter your lastname"
+        type="text"
+        onChange={(e) => {
+          setLastname(e.target.value);
+        }}
+      />
+      <input
+        value={phonenumber}
+        className="custom-input  focus:border-blue focus:border-2 focus:border-solid   w-[300px] h-[40px] rounded-md"
+        placeholder="Enter your phonenumber"
+        type="email"
+        onChange={(e) => {
+          setPhonenumber(e.target.value);
+        }}
+      />
       <input
         value={email}
         className="custom-input  focus:border-blue focus:border-2 focus:border-solid   w-[300px] h-[40px] rounded-md"
@@ -55,25 +88,17 @@ const Login: React.FC = () => {
         }}
         className="bg-maroon rounded-md w-[300px] h-[40px] text-white"
       >
-        LOGIN
+        REGISTER
       </button>
 
-      <button
-        onClick={() => {
-          handleAnonymousLogin();
-        }}
-        className="bg-lightblue w-[300px] h-[40px] text-white"
-      >
-        ANONYMOUS
-      </button>
       <div className=" flex max-w-[300px] flex-row  justify-start items-center">
-        <p className="text-white">Don't have an account?</p>
-        <Link to="/register" className="text-maroon">
-          Sign Up
+        <p className="text-white">Already have an account?</p>
+        <Link to="/" className="text-maroon">
+          Log in
         </Link>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default Register;
