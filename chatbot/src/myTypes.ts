@@ -9,7 +9,7 @@ export interface User {
   }
 
   export interface ChartDataItem {
-    name: string;
+    date: string;
     "Reported Cases ": number;
     "Users ": number;
     "Messages ": number;
@@ -35,8 +35,11 @@ export interface User {
     sender:string,
     chatId:string,
   }
-  export interface TableProps {
+
+  export interface TableProps  {
     name: string;
+    data:JSX.Element[] ,
+    headers:string[],
   }
  export  interface ComponentProps {
   /** The text to display inside the button */
@@ -49,4 +52,44 @@ export type Messages ={
 
     sender: string;
     message: string;
+};
+
+export type Report = {
+  ReportedCases: string;
+  Messages: string;
+  Users: User[];
+  Date: string;
+};
+export type Incident = {
+ _id: string;
+  firstname: string;
+  lastname: string;
+  incident: string;
+  email:string,
+};
+
+export type messagesData= { 
+sentiment:string,
+percentage:number,
+count:number
+
+}
+
+export type Reports = {
+  dailyStats: Report[];
+  messagesData:messagesData[];
+  totalMessages:number;
+  incidents:Incident[],
+  users:User[],
+
+  
+};
+
+
+
+export type ReportsApiState = {
+  reports?:  Reports|null;
+  report:Report|null;
+  status: "idle" | "loading" | "failed";
+  error: string | null;
 };

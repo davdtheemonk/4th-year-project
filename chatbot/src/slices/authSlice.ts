@@ -9,7 +9,12 @@ type User = {
 };
 
 type NewUser = User & {
-  name: string;
+  firstname: string;
+  lastname:string,
+  email:string,
+  password:string,
+  phonenumber:string
+  accounttype:string,
 };
 
 type UserBasicInfo = {
@@ -74,25 +79,43 @@ export const login = createAsyncThunk("login", async (data: User) => {
 });
 
 export const register = createAsyncThunk("register", async (data: NewUser) => {
-  const response = await axiosInstance.post(
-    "/register",
+  const response = axiosInstance.post(
+    "/users/auth/register",
     data
+    
   );
-  const resData = response.data;
+  toast.promise(response, {
+    loading: 'Registering...',
+    success: (data) => {
+      if (data.status === 500) throw new Error('server error')
+      
+     setTimeout(() => {
+       
+        window.location.href = `/`;
 
-  localStorage.setItem("userInfo", JSON.stringify(resData));
+      
+      }, 1500)
 
-  return resData;
+     
+      return "Registration Successful"
+    },
+    error: (e) => {
+      return e?.response?.data?.message || "An error occurred at our end"
+    }
+  })
+
+ 
 });
 
 export const logout = createAsyncThunk("logout", async () => {
-  const response = await axiosInstance.post("/logout", {});
-  const resData = response.data;
 
   localStorage.removeItem("userInfo");
+  window.location.href = "/"
 
-  return resData;
+
 });
+
+
 
 export const anonymousLogin = createAsyncThunk("anonymous", async () => {
   const response = axiosInstance.get("/users/auth/anonymous");
@@ -145,17 +168,7 @@ const authSlice = createSlice({
       state.error = action.error.message || "Login failed";
     })
  
-      .addCase(register.pending, (state) => {
-        state.status = "loading";
-        state.error = null;
-      })
-      .addCase(
-        register.fulfilled,
-        (state, action: PayloadAction<UserBasicInfo>) => {
-          state.status = "idle";
-          state.basicUserInfo = action.payload;
-        }
-      )
+  
       .addCase(register.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message || "Registration failed";

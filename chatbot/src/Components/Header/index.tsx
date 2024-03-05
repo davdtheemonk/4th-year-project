@@ -25,7 +25,7 @@ const Header: React.FC = () => {
           ) : (
             <p className="text-slate text-sm">Anonymous</p>
           )}
-          {user && !user.isAdmin && <Button />}
+          {user && user.accounttype === "reporter" && <Button />}
         </div>
       </nav>
     </div>

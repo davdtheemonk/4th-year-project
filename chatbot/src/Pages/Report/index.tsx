@@ -1,10 +1,49 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Table from "../../Components/Table";
+import { TableCell, TableRow, Text } from "@tremor/react";
+import { FiMoreVertical } from "react-icons/fi";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks";
+import { getStatistics } from "../../slices/statsSlice";
 
 const Report: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const reports = useAppSelector((state) => state.report.reports);
+
+  useEffect(() => {
+    dispatch(getStatistics());
+  }, []);
+  const headers = [
+    "Firstname",
+    "Lastname",
+    "Phonenumber",
+    "Gender",
+    "Incident",
+  ];
+  const generateTableData = () => {
+    return (
+      reports?.incidents.map((incident) => (
+        <TableRow key={incident._id}>
+          <TableCell>
+            <FiMoreVertical />
+          </TableCell>
+          <TableCell className="text-white">
+            {incident.firstname + " " + incident.lastname}
+          </TableCell>
+          <TableCell>
+            <Text className="text-white">{incident.email}</Text>
+          </TableCell>
+        </TableRow>
+      )) || []
+    );
+  };
+
   return (
     <div className=" bg-primary flex  flex-col  py-10 ">
-      <Table name="Reported Cases" />
+      <Table
+        name="Reported Cases"
+        headers={headers}
+        data={generateTableData()}
+      />
     </div>
   );
 };

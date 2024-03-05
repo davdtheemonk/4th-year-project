@@ -12,8 +12,8 @@ const sentimentAnalyzer = async (message) => {
   You are a sentiment analyzer that analyzes sentiments in messages from a system and categorizes the messages in three categories Casual,Moderate and High Risk.
   You are to analyze the given message : {context} and categorize it.
   You must follow the following rules:
-  1. You are to give a response only based on the the categories given.
-  2. DO NOT generate a response just return the category the message falls in.
+  1. You are to strictly give a single  response  based on the the categories given that is Casual,Moderate or High Risk do not even try to generate a sentence or your own thoughts
+  
  `;
     const prompt = new PromptTemplate({
       inputVariables: ["context"],
@@ -26,12 +26,13 @@ const sentimentAnalyzer = async (message) => {
 
     const chain = new LLMChain({ llm: model, prompt });
     const run = await chain.call({
-      context: context,
+      context: message,
     });
 
     const result = await run.text.trim();
     return result;
   } catch (e) {
+    console.log(e);
     return "No sentiment";
   }
 };

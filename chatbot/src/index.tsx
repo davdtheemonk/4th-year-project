@@ -13,6 +13,7 @@ import Report from "./Pages/Report";
 import { Provider } from "react-redux";
 import store from "./store";
 import axios from "axios";
+import Register from "./Pages/Register";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -35,6 +36,7 @@ root.render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route element={<Controller />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/reports" element={<Report />} />

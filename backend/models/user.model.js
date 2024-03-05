@@ -3,18 +3,23 @@ const jwt = require("jsonwebtoken");
 const Joi = require("joi");
 const passwordComplexity = require("joi-password-complexity");
 
-const userSchema = new mongoose.Schema({
-  firstname: { type: String, required: true },
-  lastname: { type: String, required: true },
-  email: { type: String, required: true },
-  password: { type: String, required: true },
-  accounttype: { type: String, required: true },
-  phonenumber: { type: String, required: false },
-  verified: { type: Boolean, default: false },
-  profilepicUrl: { type: String, required: false },
-  isAdmin: { type: Boolean, required: false, default: false },
-  chatId: { type: String, required: false, default: false },
-});
+const userSchema = new mongoose.Schema(
+  {
+    firstname: { type: String, required: true },
+    lastname: { type: String, required: true },
+    email: { type: String, required: true },
+    password: { type: String, required: true },
+    accounttype: { type: String, required: true },
+    phonenumber: { type: String, required: false },
+    verified: { type: Boolean, default: false },
+    profilepicUrl: { type: String, required: false },
+    isAdmin: { type: Boolean, required: false, default: false },
+    chatId: { type: String, required: false, default: false },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 //We'll use cluodinary CDN for storing imageurl
 userSchema.methods.generateAuthToken = function () {
