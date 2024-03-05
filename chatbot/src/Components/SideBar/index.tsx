@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { GoHome } from "react-icons/go";
 import { CiChat1 } from "react-icons/ci";
 import { HiOutlineDocumentReport } from "react-icons/hi";
+import { CiMemoPad } from "react-icons/ci";
 import SideBarComponent from "../SideBarComponent";
 
 interface SideBarItem {
@@ -26,6 +27,12 @@ const Sidebar: React.FC = () => {
       title: "Chat",
       icon: <CiChat1 className="w-5 h-5  text-grey" />,
       link: "/chat",
+    },
+    {
+      id: 1,
+      title: "Report Case",
+      icon: <CiMemoPad className="w-5 h-5  text-grey" />,
+      link: "/reporting",
     },
     {
       id: 1,

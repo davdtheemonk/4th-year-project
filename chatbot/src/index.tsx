@@ -9,6 +9,7 @@ import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Dashboard from "./Pages/Dashboard";
 import Chat from "./Pages/Chat";
 import Controller from "./Components/Controller";
+import Reporting from "./Pages/Reporting";
 import Report from "./Pages/Report";
 import { Provider } from "react-redux";
 import store from "./store";
@@ -25,13 +26,13 @@ root.render(
           <Route path="/" element={<Login />} />
           <Route element={<Controller />}>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/reporting" element={<Reporting />} />
             <Route path="/reports" element={<Report />} />
             <Route path="/chat" element={<Chat />} />
           </Route>
         </Routes>
       </BrowserRouter>
     </Provider>
-
   </React.StrictMode>
 );
 
