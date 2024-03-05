@@ -1,52 +1,6 @@
 import { BarChart, Title } from "@tremor/react";
 import React from "react";
-import { ChartDataItem } from "../../myTypes";
 import { useAppSelector } from "../../hooks/redux-hooks";
-const chartdata: ChartDataItem[] = [
-  {
-    date: "Jan 05",
-    "Reported Cases ": 2488,
-    "Users ": 2488,
-    "Messages ": 44,
-  },
-  {
-    date: "Jan 05",
-    "Reported Cases ": 1445,
-    "Users ": 2488,
-    "Messages ": 44,
-  },
-  {
-    date: "Jan 07",
-    "Reported Cases ": 743,
-    "Users ": 2488,
-    "Messages ": 44,
-  },
-  {
-    date: "Jan 08",
-    "Reported Cases ": 281,
-    "Users ": 2488,
-    "Messages ": 44,
-  },
-  {
-    date: "Jan 09",
-    "Reported Cases ": 251,
-    "Users ": 2488,
-    "Messages ": 44,
-  },
-  {
-    date: "Jan 10",
-    "Reported Cases ": 232,
-    "Users ": 2488,
-    "Messages ": 44,
-  },
-  {
-    date: "Jan 11",
-    "Reported Cases ": 98,
-    "Users ": 2488,
-    "Messages ": 44,
-  },
-];
-
 const valueFormatter = (number: number) =>
   `${new Intl.NumberFormat("us").format(number).toString()}`;
 

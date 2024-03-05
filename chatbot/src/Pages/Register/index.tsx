@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useAppDispatch } from "../../hooks/redux-hooks";
-import { register, login } from "../../slices/authSlice";
+import { register } from "../../slices/authSlice";
 
 const Register: React.FC = () => {
   const [email, setEmail] = React.useState<string>("");
