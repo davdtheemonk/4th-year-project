@@ -40,7 +40,7 @@ root.render(
           <Route path="/register" element={<Register />} />
           <Route element={<Controller />}>
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/reporting" element={<Reporting />} />
+            <Route path="/chat/reporting" element={<Reporting />} />
             <Route path="/reports" element={<Report />} />
             <Route path="/chat/:id" element={<Chat />} />
           </Route>

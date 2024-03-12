@@ -43,10 +43,9 @@ type Data = {
       `/chat/messages/${data.url}`
     
     );
-  
-    const resData = response.data;
+    
+    const resData = response.data.data;
    
-  
 
     return resData;
   });
@@ -61,7 +60,7 @@ const token = storedUserInfo ? JSON.parse(storedUserInfo).data : null;
       data
       
     );
-    const resData = response.data;
+    const resData = response.data.data;
   
 
     return resData;

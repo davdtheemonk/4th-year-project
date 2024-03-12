@@ -6,6 +6,7 @@ export interface User {
     email:string;
     accounttype:string,
     isAdmin: boolean;
+    chatId:string
   }
 
   export interface ChartDataItem {
@@ -27,6 +28,7 @@ export interface User {
     title: string;
     icon: any;
     link: string;
+    hidden:boolean
     /** Whether the button can be interacted with */
   }
  export type Message = {
@@ -35,7 +37,11 @@ export interface User {
     sender:string,
     chatId:string,
   }
-
+  export type HeaderProps = {
+    action: () => void;
+  };
+  
+  
   export interface TableProps  {
     name: string;
     data:JSX.Element[] ,
@@ -43,7 +49,7 @@ export interface User {
   }
  export  interface ComponentProps {
   /** The text to display inside the button */
-  item: { id: number; link: string; icon: any; title: string };
+  item: { id: number; link: string; icon: any; title: string,hidden:boolean };
 
   /** Whether the button can be interacted with */
   setPage: React.Dispatch<React.SetStateAction<number>>;
@@ -54,6 +60,13 @@ export type Messages ={
     message: string;
 };
 
+export type ReportedCase = {
+  firstname:string,
+  lastname:string,
+  phonenumber:string
+  gender:string,
+  incident:string,
+}
 export type Report = {
   ReportedCases: string;
   Messages: string;
@@ -64,8 +77,10 @@ export type Incident = {
  _id: string;
   firstname: string;
   lastname: string;
+  phonenumber:number,
+  gender:string,
   incident: string;
-  email:string,
+ 
 };
 
 export type messagesData= { 

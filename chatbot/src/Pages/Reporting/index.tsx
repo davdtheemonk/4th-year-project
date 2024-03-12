@@ -1,7 +1,11 @@
 import React, { useState, ChangeEvent } from "react";
 import { IoIosArrowBack } from "react-icons/io";
-
+import { useAppDispatch } from "../../hooks/redux-hooks";
+import { useNavigate } from "react-router-dom";
+import { reportCase } from "../../slices/statsSlice";
 const Reporting = () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
@@ -22,12 +26,20 @@ const Reporting = () => {
 
   const handleSubmit = () => {
     // e.preventDefault();
-    console.log("Form data:", formData);
+    dispatch(reportCase(formData));
+  };
+  const action = () => {
+    navigate(-1);
   };
 
   return (
     <div>
-      <div className="my-1">
+      <div
+        onClick={() => {
+          action();
+        }}
+        className="my-1"
+      >
         <IoIosArrowBack className="w-8 h-8  text-white bg-maroon rounded-full p-2" />
       </div>
 

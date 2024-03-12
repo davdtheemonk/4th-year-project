@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Table from "../../Components/Table";
 import { TableCell, TableRow, Text } from "@tremor/react";
-import { FiMoreVertical } from "react-icons/fi";
+
 import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks";
 import { getStatistics } from "../../slices/statsSlice";
 
@@ -23,14 +23,16 @@ const Report: React.FC = () => {
     return (
       reports?.incidents.map((incident) => (
         <TableRow key={incident._id}>
+          <TableCell className="text-white">{incident.firstname}</TableCell>
+          <TableCell className="text-white">{incident.lastname}</TableCell>
           <TableCell>
-            <FiMoreVertical />
-          </TableCell>
-          <TableCell className="text-white">
-            {incident.firstname + " " + incident.lastname}
+            <Text className="text-white">{incident.phonenumber}</Text>
           </TableCell>
           <TableCell>
-            <Text className="text-white">{incident.email}</Text>
+            <Text className="text-white">{incident.gender}</Text>
+          </TableCell>
+          <TableCell>
+            <Text className="text-white">{incident.incident}</Text>
           </TableCell>
         </TableRow>
       )) || []

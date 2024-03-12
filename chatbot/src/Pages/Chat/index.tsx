@@ -3,10 +3,10 @@ import React, { useState, ChangeEvent, useEffect } from "react";
 import { IoIosSend } from "react-icons/io";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { PiSpinnerGap } from "react-icons/pi";
-import { useAppDispatch } from "../../hooks/redux-hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks";
 import { getMessages, sendMessage } from "../../slices/messagesSlice";
-import { useAppSelector } from "../../hooks/redux-hooks";
 import { Messages, User, Message } from "../../myTypes";
+import toast from "react-hot-toast";
 
 const Chat: React.FC = () => {
   const userString = localStorage.getItem("userInfo");
@@ -22,6 +22,8 @@ const Chat: React.FC = () => {
 
   const messagesDb = useAppSelector((state) => state.message.messages);
   const message = useAppSelector((state) => state.message.message);
+  const sendIsLoading = useAppSelector((state) => state.message.status);
+
   const handleSend = () => {
     if (question.trim() !== "") {
       setMessages([
@@ -41,16 +43,29 @@ const Chat: React.FC = () => {
       }
     }
   };
+  async function fetchData() {
+    try {
+      // Dispatch the asynchronous action
+      const action = await dispatch(getMessages({ url: id ? id : "" }));
+
+      // Check if the action was fulfilled successfully
+      if (getMessages.fulfilled.match(action)) {
+        // Access the payload (result of the asynchronous operation)
+        const messagesDb = action.payload;
+
+        // Proceed with setting messages
+        if (Array.isArray(messagesDb)) {
+          setMessages(messagesDb);
+        }
+      }
+    } catch (error) {
+      // Handle errors if needed
+
+      toast.error("An error occurre whie getting conversation");
+    }
+  }
   useEffect(() => {
-    if (id) {
-      dispatch(getMessages({ url: id }));
-    }
-
-    setMessages(messagesDb ? messagesDb : []);
-
-    if (message) {
-      setMessages([...messages, { sender: "AI", message: message.message }]);
-    }
+    fetchData();
   }, []);
 
   return (
@@ -58,7 +73,7 @@ const Chat: React.FC = () => {
       <div className="flex-grow overflow-y-hidden mt-4">
         {messages.map((message, index) => (
           <>
-            {message.sender === "Anonymous" ||
+            {message.sender === "anonymous" ||
               (message.sender !== "AI" && (
                 <div key={index} className="flex items-center mb-2 justify-end">
                   <div className="bg-lightblue text-white p-2 rounded-md">
@@ -73,9 +88,9 @@ const Chat: React.FC = () => {
                   <img
                     src="/lawyer.jpeg"
                     alt="lawyer icon"
-                    className="w-10 h-10 rounded-full m-2"
+                    className="w-10 h-10 rounded-full mr-2"
                   />
-                  <div className="bg-white p-2 h-auto rounded-md flex justify-center align-center">
+                  <div className="bg-white w-full md:max-w-[50%] p-2 h-auto rounded-md flex justify-center align-center">
                     {message.message}
                   </div>
                 </div>
@@ -83,6 +98,20 @@ const Chat: React.FC = () => {
             )}
           </>
         ))}
+        {sendIsLoading === "loading" && (
+          <div className="flex-grow overflow-auto">
+            <div className="flex items-center mb-2 justify-start">
+              <img
+                src="/lawyer.jpeg"
+                alt="lawyer icon"
+                className="w-10 h-10 rounded-full m-2"
+              />
+              <div className="bg-white p-2 h-[40px] w-[100px] rounded-md flex justify-center align-center">
+                <PiSpinnerGap className="w-5 h-5 text-grey" />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 p-10 flex flex-row gap-4 justify-center">

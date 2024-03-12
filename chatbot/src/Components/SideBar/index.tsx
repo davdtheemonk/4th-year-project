@@ -8,9 +8,12 @@ import { SideBarItem } from "../../myTypes";
 import { RiLogoutBoxLine } from "react-icons/ri";
 import { useAppDispatch } from "../../hooks/redux-hooks";
 import { logout } from "../../slices/authSlice";
+import { User } from "../../myTypes";
 
 const Sidebar: React.FC = () => {
   const [page, setPage] = useState<number>(0);
+  const userString = localStorage.getItem("userInfo");
+  const user: User | null = userString ? JSON.parse(userString) : null;
   const dispatch = useAppDispatch();
   const sidebarItems: SideBarItem[] = [
     {
@@ -18,24 +21,22 @@ const Sidebar: React.FC = () => {
       title: "Dashboard",
       icon: <GoHome className="w-5 h-5  text-grey" />,
       link: "/dashboard",
+      hidden: user && user.accounttype === "reporter" ? true : false,
     },
     {
-      id: 0,
+      id: 1,
       title: "Chat",
-      icon: <CiChat1 className="w-5 h-5  text-grey" />,
-      link: "/chat",
+      icon: <CiChat1 className="w-5 h-5 text-grey" />,
+      link: `/chat/${user && user.chatId ? user.chatId : ""}`,
+      hidden: user && user.accounttype === "admin" ? true : false, // New condition
     },
+
     {
-      id: 1,
-      title: "Report Case",
-      icon: <CiMemoPad className="w-5 h-5  text-grey" />,
-      link: "/reporting",
-    },
-    {
-      id: 1,
-      title: "Reported Cases",
+      id: 2,
+      title: "Reported Incidents",
       icon: <HiOutlineDocumentReport className="w-5 h-5  text-grey" />,
       link: "/reports",
+      hidden: user && user.accounttype === "reporter" ? true : false,
     },
   ];
   return (

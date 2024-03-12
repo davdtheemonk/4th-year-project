@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axiosInstance from "../api/axiosInstance";
 import toast from 'react-hot-toast'
-import {  ReportsApiState } from "../myTypes";
+import {  ReportsApiState,ReportedCase } from "../myTypes";
 
 
 
@@ -27,6 +27,34 @@ export const getStatistics = createAsyncThunk(
     );
    
     return response.data.data;
+  }
+);
+export const reportCase = createAsyncThunk(
+  "/statistics/report",
+  async (data:ReportedCase) => {
+    const storedUserInfo = localStorage.getItem("userInfo")
+    const token = storedUserInfo ? JSON.parse(storedUserInfo).data : null;
+    axiosInstance.defaults.headers["x-auth-token"] = token
+   
+    const response = axiosInstance.post(
+      `/statistics/report`
+      ,data
+    );
+   
+    toast.promise(response, {
+      loading: 'Sending Report',
+      success: (data) => {
+        if (data.status === 500) throw new Error('server error')
+        
+    
+  
+       
+        return "Incident Reported, wait for legal assistance"
+      },
+      error: (e) => {
+        return e?.response?.data?.message || "An error occurred at our end"
+      }
+    })
   }
 );
 
