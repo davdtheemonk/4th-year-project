@@ -1,5 +1,5 @@
 const router = require("express").Router();
-let authtoken = require("../middleware/authToken");
+let rateLimitAndAuthMiddleware = require("../middleware/rateLimitAndAuthMiddleware");
 const { User } = require("../models/user.model");
 const Report = require("../models/report.model");
 const Message = require("../models/message.model");
@@ -19,7 +19,26 @@ function generateDateRange(startDate, endDate) {
   return dateRange;
 }
 
-router.get("/reports", authtoken, async (req, res) => {
+router.post("/report", rateLimitAndAuthMiddleware, async (req, res) => {
+  try {
+    await new Report({
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      incident: req.body.incident,
+      gender: req.body.gender,
+      phonenumber: req.body.phonenumber,
+    }).save();
+    return res.status(200).send({
+      message: "Case Reported",
+    });
+  } catch (error) {
+    if (error && error._message) {
+      return res.status(500).send({ message: error._message });
+    }
+    return res.status(500).send({ message: "Internal Server Error" });
+  }
+});
+router.get("/reports", rateLimitAndAuthMiddleware, async (req, res) => {
   try {
     const currentDate = new Date(); // Current date
     const thirtyDaysAgo = new Date(currentDate);
@@ -82,6 +101,9 @@ router.get("/reports", authtoken, async (req, res) => {
           createdAt: {
             $gte: thirtyDaysAgo,
             $lte: currentDate,
+          },
+          sentiment: {
+            $in: ["High Risk", "Casual", "Moderate"],
           },
         },
       },

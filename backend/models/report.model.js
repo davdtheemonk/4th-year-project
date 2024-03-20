@@ -1,13 +1,28 @@
 const mongoose = require("mongoose");
-const { ObjectId } = mongoose.Schema;
 
 const reportSchema = new mongoose.Schema(
   {
-    reporter: {
+    firstname: {
       type: String,
+      required: true,
     },
-    report: {
+    lastname: {
       type: String,
+      required: true,
+    },
+
+    phonenumber: {
+      type: String,
+      required: true,
+    },
+    gender: {
+      type: String,
+      required: true,
+    },
+
+    incident: {
+      type: String,
+      required: true,
     },
   },
   {

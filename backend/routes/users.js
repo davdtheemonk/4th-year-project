@@ -5,10 +5,10 @@ const Admin = require("../models/admin.model");
 const Reporter = require("../models/reporter.model");
 const Police = require("../models/police.model");
 let bcrypt = require("bcrypt");
-let authtoken = require("../middleware/authToken");
+let rateLimitAndAuthMiddleware = require("../middleware/rateLimitAndAuthMiddleware");
 const { v4: uuidv4 } = require("uuid");
 
-const generateAnonymousAuthToken = (chatId) => {
+const generateAnonymousAuthtoken = (chatId) => {
   const token = jwt.sign({ _id: chatId }, process.env.PRIVATE_KEY, {
     expiresIn: "1d",
   });
@@ -62,7 +62,7 @@ router.route("/auth/anonymous").get(async (req, res) => {
     const salt = await bcrypt.genSalt(Number(process.env.SALT));
     const hashPassword = await bcrypt.hash("anonymous user202", salt);
     const chatId = uuidv4();
-    const token = generateAnonymousAuthToken(chatId);
+    const token = generateAnonymousAuthtoken(chatId);
     const newuser = await new User({
       firstname: "Anonymous",
       lastname: "user",
@@ -105,7 +105,7 @@ router.route("/auth/login").post(async (req, res) => {
     if (!validPassword) {
       return res.status(400).send({ message: "Invalid Email or Password" });
     }
-    const token = user.generateAuthToken();
+    const token = user.generaterateLimitAndAuthMiddleware();
 
     res.status(200).send({
       data: token,

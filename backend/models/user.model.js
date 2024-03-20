@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema(
 );
 
 //We'll use cluodinary CDN for storing imageurl
-userSchema.methods.generateAuthToken = function () {
+userSchema.methods.generaterateLimitAndAuthMiddleware = function () {
   const token = jwt.sign({ _id: this._id }, process.env.PRIVATE_KEY, {
     expiresIn: "1d",
   });

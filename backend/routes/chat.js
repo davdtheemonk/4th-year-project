@@ -4,7 +4,7 @@ const { PromptTemplate } = require("@langchain/core/prompts");
 const { OpenAIEmbeddings } = require("@langchain/openai");
 const { LLMChain } = require("langchain/chains");
 const Message = require("../models/message.model");
-let authtoken = require("../middleware/authToken");
+let rateLimitAndAuthMiddleware = require("../middleware/rateLimitAndAuthMiddleware");
 
 const sentimentAnalyzer = async (message) => {
   try {
@@ -36,7 +36,7 @@ const sentimentAnalyzer = async (message) => {
     return "No sentiment";
   }
 };
-router.post("/send", authtoken, async (req, res) => {
+router.post("/send", rateLimitAndAuthMiddleware, async (req, res) => {
   const template = `
    You are a leagal aid assistant that provides legal help to people you are to answer questions based on the following : {context}
   You must follow all the rules below and then give your best response:
@@ -86,7 +86,7 @@ router.post("/send", authtoken, async (req, res) => {
   }
 });
 
-router.get("/messages/:id", authtoken, async (req, res) => {
+router.get("/messages/:id", rateLimitAndAuthMiddleware, async (req, res) => {
   try {
     const id = req.params.id;
     const messages = await Message.find({
