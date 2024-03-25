@@ -22,27 +22,8 @@ const Chat: React.FC = () => {
 
   const messagesDb = useAppSelector((state) => state.message.messages);
   const message = useAppSelector((state) => state.message.message);
+
   const sendIsLoading = useAppSelector((state) => state.message.status);
-
-  const handleSend = () => {
-    if (question.trim() !== "") {
-      setMessages([
-        ...messages,
-        { sender: user ? user.email : "anonymous", message: question },
-      ]);
-
-      setQuestion(""); // Clear the input field after sending
-      if (id) {
-        dispatch(
-          sendMessage({
-            sender: user ? user.email : "anonymous",
-            message: question,
-            chatId: id,
-          })
-        );
-      }
-    }
-  };
   async function fetchData() {
     try {
       // Dispatch the asynchronous action
@@ -61,9 +42,32 @@ const Chat: React.FC = () => {
     } catch (error) {
       // Handle errors if needed
 
-      toast.error("An error occurre whie getting conversation");
+      toast.error("An error occurred whie getting conversation");
     }
   }
+  const handleSend = async () => {
+    if (question.trim() !== "") {
+      setMessages([
+        ...messages,
+        { sender: user ? user.email : "anonymous", message: question },
+      ]);
+
+      setQuestion(""); // Clear the input field after sending
+      if (id) {
+        const action = await dispatch(
+          sendMessage({
+            sender: user ? user.email : "anonymous",
+            message: question,
+            chatId: id,
+          })
+        );
+        if (sendMessage.fulfilled.match(action)) {
+          fetchData();
+        }
+      }
+    }
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -91,13 +95,14 @@ const Chat: React.FC = () => {
                     className="w-10 h-10 rounded-full mr-2"
                   />
                   <div className="bg-white w-full md:max-w-[50%] p-2 h-auto rounded-md flex justify-center align-center">
-                    {message.message}
+                    {message.message.toString()}
                   </div>
                 </div>
               </div>
             )}
           </>
         ))}
+
         {sendIsLoading === "loading" && (
           <div className="flex-grow overflow-auto">
             <div className="flex items-center mb-2 justify-start">

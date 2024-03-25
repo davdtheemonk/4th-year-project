@@ -10,24 +10,28 @@ type Messages = Array<{
 
 
 
-type Message = {
-  message:string,
-  sender:string,
-  chatId:string,
-}
+type Message =  {
+
+  message: string;
+  sender: string;
+  chatId: string;
+};
+
 type MessagesApiState = {
-    messages?:  Messages|null;
-    message:Message|null;
-    status: "idle" | "loading" | "failed";
-    error: string | null;
-  };
-  
+  messages: Message[];
+  message: Message | null;
+  status: "idle" | "loading" | "failed";
+  error: string | null;
+};
+
 const initialState: MessagesApiState = {
-    messages:null,
-    message:null ,
-    status: "idle",
-    error: null,
-  };
+  messages: [],
+  message: null,
+  status: "idle",
+  error: null,
+};
+
+
 
 type Data = {
     url: string;
@@ -84,11 +88,11 @@ const token = storedUserInfo ? JSON.parse(storedUserInfo).data : null;
         })
         .addCase(
           getMessages.fulfilled,
-          (state, action: PayloadAction<Messages>) => {
-            state.status = "idle";
-            state.messages = action.payload;
-          }
-        )
+    (state, action: PayloadAction<Message[]>) => {
+        state.status = "idle";
+        state.messages.push(...action.payload); // Using spread operator to push all messages from payload
+    }
+)
     .addCase(sendMessage.rejected, (state, action) => {
       state.status = "failed";
       state.error = action.error.message || "Send Failed";
@@ -101,7 +105,9 @@ const token = storedUserInfo ? JSON.parse(storedUserInfo).data : null;
         sendMessage.fulfilled,
         (state, action:PayloadAction<Message>) => {
           state.status = "idle";
-          state.message = action.payload;
+        
+          state.message= action.payload
+    
         }
       )
     }

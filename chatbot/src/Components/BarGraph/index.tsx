@@ -6,6 +6,7 @@ const valueFormatter = (number: number) =>
 
 const Chart: React.FC = () => {
   const report = useAppSelector((state) => state.report.reports);
+  console.log(report);
 
   return (
     <div className="relative b flex flex-col border border-white border-opacity-10  p-[15px] rounded-md  w-full md:h-[50vh]  h-auto ">
@@ -17,7 +18,7 @@ const Chart: React.FC = () => {
         yAxisWidth={48}
         data={report && report.dailyStats ? report.dailyStats : []}
         index="date"
-        categories={["Reported Cases ", "Users ", "Messages "]}
+        categories={["messageCount", "reportCount", "userCount"]}
         colors={["sky", "indigo", "lime", "sky"]}
         valueFormatter={valueFormatter}
       />

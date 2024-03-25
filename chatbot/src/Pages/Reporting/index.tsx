@@ -24,9 +24,18 @@ const Reporting = () => {
     });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // e.preventDefault();
-    dispatch(reportCase(formData));
+    const action = await dispatch(reportCase(formData));
+    if (reportCase.fulfilled.match(action)) {
+      setFormData({
+        firstname: "",
+        lastname: "",
+        phonenumber: "",
+        gender: "",
+        incident: "",
+      });
+    }
   };
   const action = () => {
     navigate(-1);
